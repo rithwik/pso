@@ -1,10 +1,3 @@
-;; (add-to-load-path ".")
-
-;; (use-modules (srfi srfi-1)
-;; 	     (utils))
-
-(set! %load-path (cons "/usr/local/share/guile/site/3.0" %load-path))
-
 (use-modules (srfi srfi-1))
 
 (define (vec-sub v1 v2 . ...)
@@ -86,8 +79,8 @@
 (pso mlmfunc '(0 5.) '(0 5.) 500 0.1 0.2 0.5 100)
 (pso ackley '(-10 10.) '(-10 10.) 100 0.01 0.05 0.5 1000)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Writing data out to CSV
 
 (define (pso-full-swarm f xlims ylims nparticles cognition cohesion w niter)
   (let lp [(i 0)
@@ -109,7 +102,7 @@
 
 (use-modules (csv csv))
 
-(call-with-output-file "/Users/rithwik/spaces/lisp/out.csv"
+(call-with-output-file "out.csv"
   (lambda (port)
     (sxml->csv 
      (create-output-data
@@ -117,43 +110,13 @@
      port)))
 
 
-;;;;;;;;;;;;;
+;; Extracting repeat and iterate patterns
 
-
-(define (write-particle-history ix)
-  (call-with-output-file (string-append "/Users/rithwik/spaces/lisp/output/" (number->string ix) ".csv")
-    (lambda (port)
-      (sxml->csv 
-       (map (lambda (xy) (cons (number->string ix) (map number->string xy))) (assoc-ref (list-ref output ix) 'history))
-       port))))
-
-(for-each (lambda (ix) (write-particle-history ix)) (iota (length output)))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(use-modules (ice-9 pretty-print))
-(define pp pretty-print)
-
-
-(pp (pso-full-swarm mlmfunc '(0 5.) '(0 5.) 1000 0.01 0.05 0.5 20))
-
-(pso-full-swarm mlmfunc '(0 5.) '(0 5.) 100 0.1 0.1 0.8 500)
-
-(let ((output-port (open-file "my.txt" "a")))
-  (display "hello, world" output-port)
-  (newline output-port)
-  (close output-port))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(define (repeat n f)
+(define (repeatedly n f)
   (map (lambda (f) (f))
        (take (circular-list f) n)))
 
-(define (repeat n f)
+(define (repeatedly n f)
   (let lp [(i 0)
 	   (res '())]
     (if (= i n)
@@ -170,7 +133,6 @@
 	(lp (+ 1 i) (f res)))))
 
 (iterate 3 (lambda (x) (* 2 x)) 1)
-
 
 (define (make-swarm xlims ylims nparticles)
   (repeat nparticles (lambda () (make-particle xlims ylims))))
