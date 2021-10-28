@@ -31,7 +31,7 @@ def vec_sub(v1, v2):
     return [x - y for x, y in zip(v1, v2)]
 
 
-def update_swarm(swarm, f, cognition, cohesion, w):
+def update_swarm(swarm, f, cognition, cohesion, inertia):
     global_best = best_particle(f, swarm)
 
     def update_particle(p):
@@ -41,7 +41,7 @@ def update_swarm(swarm, f, cognition, cohesion, w):
         h = p["history"]
 
         new_v = vec_add(
-            [x * w for x in v],
+            [x * inertia for x in v],
             [x * cognition * uniform(0, 1) for x in vec_sub(b, xy)],
             [
                 x * cohesion * uniform(0, 1)
@@ -66,10 +66,10 @@ def update_swarm(swarm, f, cognition, cohesion, w):
     return [update_particle(p) for p in swarm]
 
 
-def pso(f, xlims, ylims, nparticles, cognition, cohesion, w, niter):
+def pso(f, xlims, ylims, nparticles, cognition, cohesion, inertia, niter):
     swarm = make_swarm(xlims, ylims, nparticles)
     for i in range(niter):
-        swarm = update_swarm(swarm, f, cognition, cohesion, w)
+        swarm = update_swarm(swarm, f, cognition, cohesion, inertia)
     return best_particle(f, swarm)["best"]
 
 
