@@ -88,13 +88,3 @@ def ackley(x, y):
 
 pso(mlmfunc, [0, 5], [0, 5], 20, 0.01, 0.05, 0.5, 50)
 pso(ackley, [-10, 10], [-10, 10], 20, 0.01, 0.05, 0.5, 50)
-
-
-def pso_full_swarm(f, xlims, ylims, nparticles, cognition, cohesion, w, niter):
-    swarm = make_swarm(xlims, ylims, nparticles)
-    for i in range(niter):
-        swarm = update_swarm(swarm, f, cognition, cohesion, w)
-    return swarm
-
-
-t = pso_full_swarm(ackley, [-10, 10], [-10, 10], 20, 0.01, 0.05, 0.5, 50)
