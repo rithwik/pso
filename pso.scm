@@ -140,4 +140,4 @@
 (define (pso f xlims ylims nparticles cognition cohesion inertia niter)
   (let?* [(s (make-swarm xlims ylims nparticles))
 	  (s' (iterate niter (lambda (s) (update-swarm s f cognition cohesion inertia))))]
-	 (assoc-ref (best-particle f updated-swarm) 'best)))
+	 (assoc-ref (best-particle f s') 'best)))
