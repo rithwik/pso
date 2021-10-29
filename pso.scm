@@ -123,8 +123,6 @@
 	res
 	(lp (+ 1 i) (cons (f) res)))))
 
-(repeat 5 (lambda () (random 10)))
-
 (define (iterate n f x)
   (let lp [(i 1)
 	   (res (f x))]
