@@ -135,7 +135,7 @@
 (iterate 3 (lambda (x) (* 2 x)) 1)
 
 (define (make-swarm xlims ylims nparticles)
-  (repeat nparticles (lambda () (make-particle xlims ylims))))
+  (repeatedly nparticles (lambda () (make-particle xlims ylims))))
 
 (define (pso f xlims ylims nparticles cognition cohesion inertia niter)
   (let?* [(s (make-swarm xlims ylims nparticles))
